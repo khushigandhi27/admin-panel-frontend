@@ -17,10 +17,18 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/ContentManagement" className={({ isActive }) => (isActive ? "active-link" : "")}>
+          <NavLink to="/TaskManagement" className={({ isActive }) => (isActive ? "active-link" : "")}>
             <div className="nav-item">
               <FaFileAlt className="icon" />
-              <span>Content Management</span>
+              <span>Task Management</span>
+            </div>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/TestManagement" className={({ isActive }) => (isActive ? "active-link" : "")}>
+            <div className="nav-item">
+              <FaFileAlt className="icon" />
+              <span>Test Management</span>
             </div>
           </NavLink>
         </li>

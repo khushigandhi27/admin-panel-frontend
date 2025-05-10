@@ -4,8 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import Notifications from "./pages/Notifications";
 import Upgrade from "./pages/Upgrade";
 import UserProfile from "./pages/UserProfile";
-import ContentManagement from "./pages/ContentManagement";
+import TaskManagement from "./pages/TaskManagement";
 import Subscription from "./pages/Subscription";
+import TestManagement from "./pages/TestManagement";
 
 const AppRoutes = () => {
   return (
@@ -14,7 +15,8 @@ const AppRoutes = () => {
       <Route path="/notifications" element={<Notifications />} />
       <Route path="/upgrade" element={<Upgrade />} />
       <Route path="/user" element={<UserProfile />} />
-      <Route path="/content" element={<ContentManagement />} />
+      <Route path="/task" element={<TaskManagement />} />
+      <Route path= "/test" element={<TestManagement />} />
       <Route path="/subscription" element={<Subscription />} />
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
     </Routes>
