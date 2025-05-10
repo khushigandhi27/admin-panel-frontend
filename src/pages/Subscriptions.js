@@ -10,7 +10,7 @@ const SubscriptionManagement = () => {
   const fetchSubscriptions = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/subscriptions");
+      const res = await axios.get("http://admin-panel-backend-zeta.vercel.app/api/subscriptions");
       if (res.data.success) setSubscriptions(res.data.data);
     } catch (err) {
       console.error("Failed to load subscriptions", err);
