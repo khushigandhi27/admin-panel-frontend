@@ -14,7 +14,7 @@ const TaskManagement = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://admin-panel-backend-zeta.vercel.app/api/task/get-all");
+      const res = await axios.get("https://admin-panel-backend-production-66f0.up.railway.app/api/task/get-all");
       if (res.data.success) {
         setData(res.data.data);
       } else {
@@ -37,7 +37,7 @@ const TaskManagement = () => {
     formData.append("file", file);
 
     try {
-      await axios.post("http://admin-panel-backend-zeta.vercel.app/api/task/upload", formData, {
+      await axios.post("https://admin-panel-backend-production-66f0.up.railway.app/api/task/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Upload successful!");

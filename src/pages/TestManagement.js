@@ -13,7 +13,7 @@ const TestManagement = () => {
   const fetchTests = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://admin-panel-backend-zeta.vercel.app/api/test/get-all");
+      const res = await axios.get("https://admin-panel-backend-production-66f0.up.railway.app/api/test/get-all");
       if (res.data.success) setTests(res.data.data);
     } catch (err) {
       console.error("Failed to load tests", err);
@@ -31,7 +31,7 @@ const TestManagement = () => {
     formData.append("file", file);
 
     try {
-      await axios.post("http://admin-panel-backend-zeta.vercel.app/api/test/upload", formData, {
+      await axios.post("https://admin-panel-backend-production-66f0.up.railway.app/api/test/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("✅ Upload successful!");
