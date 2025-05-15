@@ -13,6 +13,7 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
+    "postinstall": "if [ -f ./node_modules/.bin/react-scripts ]; then chmod +x ./node_modules/.bin/react-scripts; fi",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
