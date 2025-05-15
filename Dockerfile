@@ -1,19 +1,12 @@
-# Use a Node.js base image
-FROM node:18
+# Use nginx to serve the static build files
+FROM nginx:stable-alpine
 
-# Set working directory
-WORKDIR /app
+# Copy built files to nginx server
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy package.json and install dependencies
-COPY package*.json ./
-RUN npm install --legacy-peer-deps
+# Expose port 80
+EXPOSE 80
 
-# Copy all files
-COPY . .
-
-# Build the React app
-RUN npm run build
-
-# Serve the app using a simple server
-RUN npm install -g serve
-CMD ["serve", "-s", "build"]
+# Start nginx server
+CMD ["nginx", "-g", "daemon off;"]
