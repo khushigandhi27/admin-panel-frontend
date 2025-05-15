@@ -1,6 +1,6 @@
 // src/components/TestManagement.js
 import React, { useEffect, useState } from "react";
-import { fetchTests, uploadTestFile } from "../api/apiService";
+import { fetchTests, uploadTestFile } from "../apiService";
 
 const TestManagement = () => {
   const [tests, setTests] = useState([]);
@@ -15,7 +15,12 @@ const TestManagement = () => {
     setLoading(true);
     try {
       const data = await fetchTests();
-      setTests(data.data);
+      if (data.success) {
+        setTests(data.data);
+      } else {
+        console.error("Failed to load tests", data);
+        alert("Failed to load tests.");
+      }
     } catch (err) {
       console.error("Failed to load tests", err);
       alert("Failed to load tests.");
