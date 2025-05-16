@@ -31,6 +31,20 @@ const TaskManagement = () => {
     }
   };
 
+  useEffect(() => {
+    testApiConnection();
+  }, []);
+  
+  const testApiConnection = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/api/task/get-all`);
+      console.log("API Response:", res.data);
+    } catch (err) {
+      console.error("Direct API Error:", err);
+    }
+  };
+  
+
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
   const handleFileUpload = async () => {
