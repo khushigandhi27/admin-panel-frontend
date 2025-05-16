@@ -10,7 +10,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --legacy-peer-deps
 
-# Copy all project files
+# Copy all project files (including src and public)
 COPY . .
 
 # Build the React app
