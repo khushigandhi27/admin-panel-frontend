@@ -7,6 +7,9 @@ const TaskManagement = () => {
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
 
+  // ✅ Use Environment Variable for API URL
+  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -14,7 +17,7 @@ const TaskManagement = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://admin-panel-backend-production-66f0.up.railway.app/api/task/get-all");
+      const res = await axios.get(`${apiUrl}/api/task/get-all`);
       if (res.data.success) {
         setData(res.data.data);
       } else {
@@ -22,7 +25,7 @@ const TaskManagement = () => {
       }
     } catch (err) {
       setError("Error loading data");
-      console.error(err);
+      console.error("Fetch error:", err);
     } finally {
       setLoading(false);
     }
@@ -31,20 +34,23 @@ const TaskManagement = () => {
   const handleFileChange = (e) => setFile(e.target.files[0]);
 
   const handleFileUpload = async () => {
-    if (!file) return alert("Please select a file.");
+    if (!file) {
+      alert("Please select a file.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      await axios.post("https://admin-panel-backend-production-66f0.up.railway.app/api/task/upload", formData, {
+      await axios.post(`${apiUrl}/api/task/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Upload successful!");
-      fetchData();
+      fetchData(); // Refresh data after upload
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Upload failed");
+      alert("Upload failed. Please try again.");
     }
   };
 
@@ -60,11 +66,15 @@ const TaskManagement = () => {
           boxShadow: "0 4px 12px rgba(0.2,0,0,0.1)",
           marginBottom: "1rem",
           width: "50%", 
-          marginBottom: "20px",
           marginTop: "15px", 
         }}>
         <h4>Upload Task Excel File</h4>
-        <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} style={{ marginTop: "5px"}} />
+        <input 
+          type="file" 
+          accept=".xlsx,.xls" 
+          onChange={handleFileChange} 
+          style={{ marginTop: "5px"}} 
+        />
         <button 
           onClick={handleFileUpload} 
           style={{
@@ -89,56 +99,70 @@ const TaskManagement = () => {
           width: "100%",
         }}>
         <h3>All Entries</h3>
-        <div style={{ overflowX: "auto", maxHeight: "400px" }}>
-          <table className="table table-bordered table-sm" style={{ width: "100%" }}>
-            <thead className="table-dark">
-              <tr>
-                <th>Week</th>
-                <th>Task Owner</th>
-                <th>Task</th>
-                <th>MCQ 1</th>
-                <th>MCQ 2</th>
-                <th>MCQ 3</th>
-                <th>MCQ 1 Option 1</th>
-                <th>MCQ 1 Option 2</th>
-                <th>MCQ 1 Option 3</th>
-                <th>MCQ 1 Option 4</th>
-                <th>MCQ 2 Option 1</th>
-                <th>MCQ 2 Option 2</th>
-                <th>MCQ 2 Option 3</th>
-                <th>MCQ 2 Option 4</th>
-                <th>MCQ 3 Option 1</th>
-                <th>MCQ 3 Option 2</th>
-                <th>MCQ 3 Option 3</th>
-                <th>MCQ 3 Option 4</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, idx) => (
-                <tr key={idx}>
-                  <td>{row.week}</td>
-                  <td>{row.task_owner}</td>
-                  <td>{row.task}</td>
-                  <td>{row.mcq1}</td>
-                  <td>{row.mcq2}</td>
-                  <td>{row.mcq3}</td>
-                  <td>{row.mcq1_opt1}</td>
-                  <td>{row.mcq1_opt2}</td>
-                  <td>{row.mcq1_opt3}</td>
-                  <td>{row.mcq1_opt4}</td>
-                  <td>{row.mcq2_opt1}</td>
-                  <td>{row.mcq2_opt2}</td>
-                  <td>{row.mcq2_opt3}</td>
-                  <td>{row.mcq2_opt4}</td>
-                  <td>{row.mcq3_opt1}</td>
-                  <td>{row.mcq3_opt2}</td>
-                  <td>{row.mcq3_opt3}</td>
-                  <td>{row.mcq3_opt4}</td>
+
+        {/* ✅ Loading State */}
+        {loading ? (
+          <p>Loading data...</p>
+        ) : error ? (
+          <p style={{ color: "red" }}>{error}</p>
+        ) : (
+          <div style={{ overflowX: "auto", maxHeight: "400px" }}>
+            <table className="table table-bordered table-sm" style={{ width: "100%" }}>
+              <thead className="table-dark">
+                <tr>
+                  <th>Week</th>
+                  <th>Task Owner</th>
+                  <th>Task</th>
+                  <th>MCQ 1</th>
+                  <th>MCQ 2</th>
+                  <th>MCQ 3</th>
+                  <th>MCQ 1 Option 1</th>
+                  <th>MCQ 1 Option 2</th>
+                  <th>MCQ 1 Option 3</th>
+                  <th>MCQ 1 Option 4</th>
+                  <th>MCQ 2 Option 1</th>
+                  <th>MCQ 2 Option 2</th>
+                  <th>MCQ 2 Option 3</th>
+                  <th>MCQ 2 Option 4</th>
+                  <th>MCQ 3 Option 1</th>
+                  <th>MCQ 3 Option 2</th>
+                  <th>MCQ 3 Option 3</th>
+                  <th>MCQ 3 Option 4</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {data.length > 0 ? (
+                  data.map((row, idx) => (
+                    <tr key={idx}>
+                      <td>{row.week}</td>
+                      <td>{row.task_owner}</td>
+                      <td>{row.task}</td>
+                      <td>{row.mcq1}</td>
+                      <td>{row.mcq2}</td>
+                      <td>{row.mcq3}</td>
+                      <td>{row.mcq1_opt1}</td>
+                      <td>{row.mcq1_opt2}</td>
+                      <td>{row.mcq1_opt3}</td>
+                      <td>{row.mcq1_opt4}</td>
+                      <td>{row.mcq2_opt1}</td>
+                      <td>{row.mcq2_opt2}</td>
+                      <td>{row.mcq2_opt3}</td>
+                      <td>{row.mcq2_opt4}</td>
+                      <td>{row.mcq3_opt1}</td>
+                      <td>{row.mcq3_opt2}</td>
+                      <td>{row.mcq3_opt3}</td>
+                      <td>{row.mcq3_opt4}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="18">No data available.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
