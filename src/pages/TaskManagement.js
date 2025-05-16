@@ -8,14 +8,13 @@ const TaskManagement = () => {
   const [file, setFile] = useState(null);
 
   // ✅ Use Environment Variable for API URL
-  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+  const apiUrl = process.env.REACT_APP_API_URL || "https://admin-panel-backend-production-66f0.up.railway.app";
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
       const res = await axios.get(`${apiUrl}/api/task/get-all`);
       if (res.data.success) {
@@ -26,10 +25,9 @@ const TaskManagement = () => {
     } catch (err) {
       setError("Error loading data");
       console.error("Fetch error:", err);
-    } finally {
-      setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     testApiConnection();
