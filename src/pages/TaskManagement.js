@@ -13,7 +13,7 @@ const TaskManagement = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/task/get-all`);
+      const res = await axios.get(process.env.REACT_APP_API_URL/api/task/get-all);
       if (res.data.success) {
         setData(res.data.data);
       } else {
