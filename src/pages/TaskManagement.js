@@ -7,16 +7,13 @@ const TaskManagement = () => {
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
 
-  // ✅ Use Environment Variable for API URL
-  const apiUrl = process.env.REACT_APP_API_URL;
-  
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${apiUrl}/api/task/get-all`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/task/get-all`);
       if (res.data.success) {
         setData(res.data.data);
       } else {
@@ -35,7 +32,7 @@ const TaskManagement = () => {
   
   const testApiConnection = async () => {
     try {
-      const res = await axios.get(`${apiUrl}/api/task/get-all`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/task/get-all`);
       console.log("API Response:", res.data);
     } catch (err) {
       console.error("Direct API Error:", err);
@@ -55,7 +52,7 @@ const TaskManagement = () => {
     formData.append("file", file);
 
     try {
-      await axios.post(`${apiUrl}/api/task/upload`, formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/task/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Upload successful!");
