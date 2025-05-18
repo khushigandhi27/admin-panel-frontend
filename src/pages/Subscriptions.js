@@ -10,7 +10,7 @@ const SubscriptionManagement = () => {
   const fetchSubscriptions = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://admin-panel-backend-production-66f0.up.railway.app/api/subscriptions");
+      const res = await axios.get(process.env.REACT_APP_BACKEND_URL);
       if (res.data.success) setSubscriptions(res.data.data);
     } catch (err) {
       console.error("Failed to load subscriptions", err);

@@ -8,8 +8,8 @@ const TaskManagement = () => {
   const [file, setFile] = useState(null);
 
   // ✅ Use Environment Variable for API URL
-  const apiUrl = process.env.REACT_APP_API_URL || "https://admin-panel-backend-production-66f0.up.railway.app";
-
+  const apiUrl = process.env.REACT_APP_API_URL;
+  
   useEffect(() => {
     fetchData();
   }, []);
