@@ -1,5 +1,0 @@
-
-build
-Dockerfile
-.dockerignore
-.env.local
