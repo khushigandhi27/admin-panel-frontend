@@ -1,29 +1,34 @@
-# Use Node.js for building
-FROM node:18-alpine AS build
+# === Stage 1: Build React Frontend ===
+FROM node:18-alpine AS frontend
 
-# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy React package files
+COPY admin-panel-frontend/package*.json ./admin-panel-frontend/
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
-
-# Copy all project files (including src and public)
-COPY . .
-
-# Build the React app
+# Install React deps & build
+WORKDIR /app/admin-panel-frontend
+RUN npm install
+COPY admin-panel-frontend/ ./
 RUN npm run build
 
-# Use nginx to serve the static build files
-FROM nginx:alpine
+# === Stage 2: Build and Run Backend (Express Server) ===
+FROM node:18-alpine
 
-# Copy built files to nginx server
-COPY --from=build /app/build /usr/share/nginx/html
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Copy backend package files
+COPY package*.json ./
+RUN npm install
 
-# Start nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Copy backend source
+COPY . ./
+
+# Copy built React frontend into backend
+COPY --from=frontend /app/admin-panel-frontend/build ./admin-panel-frontend/build
+
+# Expose backend port
+EXPOSE 8080
+
+# Run your Express app
+CMD ["node", "index.js"]
